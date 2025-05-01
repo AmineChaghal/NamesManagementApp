@@ -1,7 +1,15 @@
-package temp;
+package moteur;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import classesPorteusesDeDonnees.CoupleDeNoms;
+import classesPorteusesDeDonnees.Nom;
+import classesPorteusesDeDonnees.ResultatDeComparaison;
+import interfaces.ComparateurDeNoms;
+import interfaces.GenerateurDeCandidatsALaComparaison;
+import interfaces.Pretraiteur;
+import interfaces.SelectionneurDeResultats;
 
 public class MoteurDeMatchingDeNoms {
 
@@ -20,6 +28,13 @@ public class MoteurDeMatchingDeNoms {
         this.selectionneur = selectionneur;
     }
 
+    
+    /*La méthode rechercherUnNomDansUneListe prend en parametres un nomARechercher de type Nom et une listeOuRechercher de type liste de Nom
+     * L'utilisateur entrera un String à rechercher qui sera mis en format Nom avec un id trivial
+     * Le RecuperateurDeNoms recuperera depuis le fichier d'abord une liste de string avec id et regroupera ces elements pour retourner une liste de Noms  
+     * Durant ces deux étapes l'initialisation de l'attribut nomDecompose de chaque Nom se fera grace à un DecomposeurDeNoms
+     * Ces etapes se feront dans le main avant de passer les parametres adéquats à la méthode rechercherUnNomDansUneListe
+     *  */
     public List<ResultatDeComparaison> rechercherUnNomDansUneListe(Nom nomARechercher, List<Nom> listeOuRechercher) {
         
 
@@ -61,6 +76,9 @@ public class MoteurDeMatchingDeNoms {
     public void dedupliquerUneListe() {
         // À implémenter plus tard
     }
+    
+    
+    /*la methode pretraiterUnNom permet de pretraiter les deux attributs NomDecompose et nomComplet d'un objet de type Nom en les faisant passer par la liste des pretraitements */
     private void pretraiterUnNom(Nom nom) {
     	// Étape 1 : prétraitement du nom decomposé
         
@@ -84,20 +102,4 @@ public class MoteurDeMatchingDeNoms {
 
 
 
-/*// Étape 1.1 : prétraitement du nom decomposé
-        
-        List<String> partiesNom = nomARechercher.getNomDecompose();
-        for (Pretraiteur pretraiteur : pretraiteurs) {
-            partiesNom = pretraiteur.traiter(partiesNom);
-        }
-        nomARechercher.setNomDecompose(partiesNom);
-        
-        	// Étape 1.2 : prétraitement du nom complet
-        
-        List<String> nomComplet = new ArrayList<>();
-        nomComplet.add(nomARechercher.getNomComplet());
-        for (Pretraiteur pretraiteur : pretraiteurs) {
-            nomComplet = pretraiteur.traiter(nomComplet);
-        }
-        nomARechercher.setNomComplet(nomComplet);
-        */
+

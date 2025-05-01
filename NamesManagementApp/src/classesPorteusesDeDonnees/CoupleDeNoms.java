@@ -1,4 +1,4 @@
-package temp;
+package classesPorteusesDeDonnees;
 
 public class CoupleDeNoms {
     private final Nom nom1;

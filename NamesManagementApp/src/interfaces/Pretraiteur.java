@@ -1,4 +1,4 @@
-package temp;
+package interfaces;
 
 import java.util.List;
 

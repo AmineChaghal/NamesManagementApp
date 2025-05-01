@@ -1,4 +1,4 @@
-package temp;
+package classesPorteusesDeDonnees;
 
 public class ResultatDeComparaison implements Comparable<ResultatDeComparaison> {
     private Nom nom1;
