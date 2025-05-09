@@ -1,6 +1,5 @@
 package classesConcretes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import classesPorteusesDeDonnees.ResultatDeComparaison;
