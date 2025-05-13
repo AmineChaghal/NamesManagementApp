@@ -70,12 +70,42 @@ public class MoteurDeMatchingDeNoms {
     }
     
     public List<ResultatDeComparaison> comparerDeuxListes(List<Nom> liste1, List<Nom> liste2) {
-        List<ResultatDeComparaison> resultats = new ArrayList<>();
+        /*List<ResultatDeComparaison> resultats = new ArrayList<>();
 
         for (Nom nom : liste1) {
             resultats.addAll(rechercherUnNomDansUneListe(nom, liste2));
         }
 
+        return resultats;*/
+    	// Étape 1 : prétraitement de la liste 1
+		
+    	for (Nom nom : liste1) {
+        	pretraiterUnNom(nom);
+          }
+        
+        // Étape 2 : prétraitement de la liste 2
+		
+        for (Nom nom : liste2) {
+        	pretraiterUnNom(nom);
+          }
+
+
+        // Étape 3 : génération des candidats
+        
+        
+        List<CoupleDeNoms> candidats = generateur.generer(liste1,liste2);
+
+        // Étape 4 : comparaison 
+        
+        List<ResultatDeComparaison> resultats = new ArrayList<>();
+        for (CoupleDeNoms candidat : candidats) {
+        	ResultatDeComparaison couplePlusScore = new ResultatDeComparaison(candidat.getNom1(),candidat.getNom2(),comparateur.comparer(candidat.getNom1(), candidat.getNom2()));
+        	resultats.add(couplePlusScore);
+             }
+
+     // Étape 4 : Sélection des resultats
+        resultats = selectionneur.selectionner(resultats);
+        
         return resultats;
     }
 

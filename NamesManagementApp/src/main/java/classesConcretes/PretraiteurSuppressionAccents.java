@@ -10,7 +10,12 @@ import java.util.stream.Collectors;
 
 public class PretraiteurSuppressionAccents implements Pretraiteur {
 
-    private static final Pattern DIACRITICS_PATTERN =
+    public PretraiteurSuppressionAccents() {
+		super();
+	}
+
+
+	private static final Pattern DIACRITICS_PATTERN =
         Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 
    

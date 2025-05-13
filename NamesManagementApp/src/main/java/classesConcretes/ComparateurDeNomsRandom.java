@@ -12,4 +12,8 @@ public class ComparateurDeNomsRandom implements ComparateurDeNoms {
     public double comparer(Nom nom1, Nom nom2) {
         return random.nextDouble(); // valeur entre 0 et 1
     }
+
+	public ComparateurDeNomsRandom() {
+		super();
+	}
 }

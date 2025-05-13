@@ -34,7 +34,7 @@ public class ComparateurDifferentesCombinaisonsDuNomDecompose implements Compara
 
         for (List<String> p : permutationsPetite) {
             for (List<String> s : sousListesGrande) {
-                double score = comparerListes(p, s);
+                double score = comparerListes(p, s)/l2.size();
                 if (score > meilleurScore) meilleurScore = score;
             }
         }
@@ -52,7 +52,7 @@ public class ComparateurDifferentesCombinaisonsDuNomDecompose implements Compara
             score /= comparateursDeChaines.size();
             total += score;
         }
-        return total / l1.size();  // moyenne
+        return total ;  // moyenne
     }
 
     private List<List<String>> genererSousListes(List<String> liste, int taille) {
