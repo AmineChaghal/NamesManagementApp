@@ -42,10 +42,10 @@ public class ResultatDeComparaisonTest {
         }
 
         // Cas 2: Test de la méthode compareTo pour le tri
-        ResultatDeComparaison r_high = new ResultatDeComparaison(nomA, nomB, 0.9f);
-        ResultatDeComparaison r_medium = new ResultatDeComparaison(nomA, nomC, 0.7f);
-        ResultatDeComparaison r_low = new ResultatDeComparaison(nomB, nomC, 0.5f);
-        ResultatDeComparaison r_medium_alt = new ResultatDeComparaison(nomC, nomD, 0.7f); // Même score que r_medium
+        ResultatDeComparaison r_high = new ResultatDeComparaison(nomA, nomB, 0.9);
+        ResultatDeComparaison r_medium = new ResultatDeComparaison(nomA, nomC, 0.7);
+        ResultatDeComparaison r_low = new ResultatDeComparaison(nomB, nomC, 0.5);
+        ResultatDeComparaison r_medium_alt = new ResultatDeComparaison(nomC, nomD, 0.7); // Même score que r_medium
 
         List<ResultatDeComparaison> listeResultats = new ArrayList<>();
         listeResultats.add(r_low);      // 0.5
@@ -68,7 +68,7 @@ public class ResultatDeComparaisonTest {
             cas2_ok = false;
         }
         // Vérifier que les éléments du milieu ont le bon score (0.7)
-        if (listeResultats.get(1).getScore() != 0.7f || listeResultats.get(2).getScore() != 0.7f) {
+        if (listeResultats.get(1).getScore() != 0.7f || listeResultats.get(2).getScore() != 0.7) {
             System.err.println("ResultatDeComparaisonTest - Cas 2: Échec. Scores des éléments du milieu incorrects après tri.");
             cas2_ok = false;
         }

@@ -13,135 +13,165 @@ import interfaces.SelectionneurDeResultats;
 
 public class MoteurDeMatchingDeNoms {
 
-    private List<Pretraiteur> pretraiteurs;
-    private ComparateurDeNoms comparateur;
-    private GenerateurDeCandidatsALaComparaison generateur;
-    private SelectionneurDeResultats selectionneur;
+	private List<Pretraiteur> pretraiteurs;
+	private ComparateurDeNoms comparateur;
+	private GenerateurDeCandidatsALaComparaison generateur;
+	private SelectionneurDeResultats selectionneur;
 
-    public MoteurDeMatchingDeNoms(List<Pretraiteur> pretraiteurs,
-                                   ComparateurDeNoms comparateur,
-                                   GenerateurDeCandidatsALaComparaison generateur,
-                                   SelectionneurDeResultats selectionneur) {
-        this.pretraiteurs = pretraiteurs;
-        this.comparateur = comparateur;
-        this.generateur = generateur;
-        this.selectionneur = selectionneur;
-    }
+	public MoteurDeMatchingDeNoms(List<Pretraiteur> pretraiteurs, ComparateurDeNoms comparateur,
+			GenerateurDeCandidatsALaComparaison generateur, SelectionneurDeResultats selectionneur) {
+		this.pretraiteurs = pretraiteurs;
+		this.comparateur = comparateur;
+		this.generateur = generateur;
+		this.selectionneur = selectionneur;
+	}
 
-    
-    /*La méthode rechercherUnNomDansUneListe prend en parametres un nomARechercher de type Nom et une listeOuRechercher de type liste de Nom
-     * L'utilisateur entrera un String à rechercher qui sera mis en format Nom avec un id trivial
-     * Le RecuperateurDeNoms recuperera depuis le fichier d'abord une liste de string avec id et regroupera ces elements pour retourner une liste de Noms  
-     * Durant ces deux étapes l'initialisation de l'attribut nomDecompose de chaque Nom se fera grace à un DecomposeurDeNoms
-     * Ces etapes se feront dans le main avant de passer les parametres adéquats à la méthode rechercherUnNomDansUneListe
-     *  */
-    public List<ResultatDeComparaison> rechercherUnNomDansUneListe(Nom nomARechercher, List<Nom> listeOuRechercher) {
-        
+	/*
+	 * La méthode rechercherUnNomDansUneListe prend en parametres un nomARechercher
+	 * de type Nom et une listeOuRechercher de type liste de Nom L'utilisateur
+	 * entrera un String à rechercher qui sera mis en format Nom avec un id trivial
+	 * Le RecuperateurDeNoms recuperera depuis le fichier d'abord une liste de
+	 * string avec id et regroupera ces elements pour retourner une liste de Noms
+	 * Durant ces deux étapes l'initialisation de l'attribut nomDecompose de chaque
+	 * Nom se fera grace à un DecomposeurDeNoms Ces etapes se feront dans le main
+	 * avant de passer les parametres adéquats à la méthode
+	 * rechercherUnNomDansUneListe
+	 */
+	public List<ResultatDeComparaison> rechercherUnNomDansUneListe(Nom nomARechercher, List<Nom> listeOuRechercher) {
 
-        // Étape 1 : prétraitement du nom à rechercher
-        		
-        pretraiterUnNom(nomARechercher);
-        
-        // Étape 2 : prétraitement de la liste
+		// Étape 1 : prétraitement du nom à rechercher
+
+		pretraiterUnNom(nomARechercher);
+
+		// Étape 2 : prétraitement de la liste
+
+		for (Nom nom : listeOuRechercher) {
+			pretraiterUnNom(nom);
+		}
+
+		// Étape 3 : génération des candidats
+
+		List<Nom> nomARechercherEnListe = new ArrayList<>();
+		nomARechercherEnListe.add(nomARechercher);
+		List<CoupleDeNoms> candidats = generateur.generer(nomARechercherEnListe, listeOuRechercher);
+
+		// Étape 4 : comparaison
+
+		List<ResultatDeComparaison> resultats = new ArrayList<>();
+		for (CoupleDeNoms candidat : candidats) {
+			ResultatDeComparaison couplePlusScore = new ResultatDeComparaison(candidat.getNom1(), candidat.getNom2(),
+					comparateur.comparer(candidat.getNom1(), candidat.getNom2()));
+			resultats.add(couplePlusScore);
+		}
+
+		// Étape 4 : Sélection des resultats
+		resultats = selectionneur.selectionner(resultats);
+
+		return resultats;
+	}
+
+	public List<ResultatDeComparaison> comparerDeuxListes(List<Nom> liste1, List<Nom> liste2) {
+		/*
+		 * List<ResultatDeComparaison> resultats = new ArrayList<>();
+		 * 
+		 * for (Nom nom : liste1) { resultats.addAll(rechercherUnNomDansUneListe(nom,
+		 * liste2)); }
+		 * 
+		 * return resultats;
+		 */
 		
-        for (Nom nom : listeOuRechercher) {
-        	pretraiterUnNom(nom);
-          }
-
-
-        // Étape 3 : génération des candidats
-        
-        List<Nom> nomARechercherEnListe = new ArrayList<>();
-        nomARechercherEnListe.add(nomARechercher);
-        List<CoupleDeNoms> candidats = generateur.generer(nomARechercherEnListe,listeOuRechercher);
-
-        // Étape 4 : comparaison 
-        
-        List<ResultatDeComparaison> resultats = new ArrayList<>();
-        for (CoupleDeNoms candidat : candidats) {
-        	ResultatDeComparaison couplePlusScore = new ResultatDeComparaison(candidat.getNom1(),candidat.getNom2(),comparateur.comparer(candidat.getNom1(), candidat.getNom2()));
-        	resultats.add(couplePlusScore);
-             }
-
-     // Étape 4 : Sélection des resultats
-        resultats = selectionneur.selectionner(resultats);
-        
-        return resultats;
-    }
-    
-    public List<ResultatDeComparaison> comparerDeuxListes(List<Nom> liste1, List<Nom> liste2) {
-        /*List<ResultatDeComparaison> resultats = new ArrayList<>();
-
-        for (Nom nom : liste1) {
-            resultats.addAll(rechercherUnNomDansUneListe(nom, liste2));
-        }
-
-        return resultats;*/
-    	// Étape 1 : prétraitement de la liste 1
 		
-    	for (Nom nom : liste1) {
-        	pretraiterUnNom(nom);
-          }
-        
-        // Étape 2 : prétraitement de la liste 2
+		// Étape 1 : prétraitement de la liste 1
+		for (Nom nom : liste2) {
+			pretraiterUnNom(nom);
+		}
+		List<ResultatDeComparaison> resultats = new ArrayList<>();
+		int tailleBloc = 1000;
+		for (int i = 0; i < liste1.size(); i += tailleBloc) {
+			int fin = Math.min(i + tailleBloc, liste1.size());
+			List<Nom> sousListe = liste1.subList(i, fin);
+
+			for (Nom nom : liste1) {
+				pretraiterUnNom(nom);
+			}
+
+			// Étape 2 : prétraitement de la liste 2
+
+			// Étape 3 : génération des candidats
+
+			List<CoupleDeNoms> candidats = new ArrayList<>();
+
+			// Étape 4 : comparaison
+
+			candidats.addAll(generateur.generer(sousListe, liste2));
+			for (CoupleDeNoms candidat : candidats) {
+				ResultatDeComparaison couplePlusScore = new ResultatDeComparaison(candidat.getNom1(),
+						candidat.getNom2(), comparateur.comparer(candidat.getNom1(), candidat.getNom2()));
+				resultats.add(couplePlusScore);
+			}
+
+			// Étape 4 : Sélection des resultats
+			resultats = selectionneur.selectionner(resultats);
+		}
+		return resultats;
 		
-        for (Nom nom : liste2) {
-        	pretraiterUnNom(nom);
-          }
+		/*// Étape 1 : prétraitement de la liste 1
 
+		for (Nom nom : liste1) {
+			pretraiterUnNom(nom);
+		}
 
-        // Étape 3 : génération des candidats
-        
-        
-        List<CoupleDeNoms> candidats = generateur.generer(liste1,liste2);
+		// Étape 2 : prétraitement de la liste 2
+		for (Nom nom : liste2) {
+			pretraiterUnNom(nom);
+		}
 
-        // Étape 4 : comparaison 
-        
-        List<ResultatDeComparaison> resultats = new ArrayList<>();
-        for (CoupleDeNoms candidat : candidats) {
-        	ResultatDeComparaison couplePlusScore = new ResultatDeComparaison(candidat.getNom1(),candidat.getNom2(),comparateur.comparer(candidat.getNom1(), candidat.getNom2()));
-        	resultats.add(couplePlusScore);
-             }
+		// Étape 3 : génération des candidats
 
-     // Étape 4 : Sélection des resultats
-        resultats = selectionneur.selectionner(resultats);
-        
-        return resultats;
-    }
+		List<CoupleDeNoms> candidats = generateur.generer(liste1, liste2);
 
+		// Étape 4 : comparaison
+		List<ResultatDeComparaison> resultats = new ArrayList<>();
 
-    public List<ResultatDeComparaison> dedupliquerUneListe(List<Nom> liste) {
-        List<ResultatDeComparaison> resultatsBruts = comparerDeuxListes(liste, liste);
+		for (CoupleDeNoms candidat : candidats) {
+			ResultatDeComparaison couplePlusScore = new ResultatDeComparaison(candidat.getNom1(), candidat.getNom2(),
+					comparateur.comparer(candidat.getNom1(), candidat.getNom2()));
+			resultats.add(couplePlusScore);
+		}
 
-        return resultatsBruts.stream()
-            .filter(r -> !r.getNom1().getId().equals(r.getNom2().getId()))
-            .toList();
-    }
+		// Étape 4 : Sélection des resultats
+		resultats = selectionneur.selectionner(resultats);
 
-    
-    
-    /*la methode pretraiterUnNom permet de pretraiter les deux attributs NomDecompose et nomComplet d'un objet de type Nom en les faisant passer par la liste des pretraitements */
-    private void pretraiterUnNom(Nom nom) {
-    	// Étape 1 : prétraitement du nom decomposé
-        
-        List<String> partiesNom = nom.getNomDecompose();
-        for (Pretraiteur pretraiteur : pretraiteurs) {
-            partiesNom = pretraiteur.traiter(partiesNom);
-        }
-        nom.setNomDecompose(partiesNom);
-        
-        // Étape 2 : prétraitement du nom complet
-        
-        List<String> nomComplet = new ArrayList<>();
-        nomComplet.add(nom.getNomComplet());
-        for (Pretraiteur pretraiteur : pretraiteurs) {
-            nomComplet = pretraiteur.traiter(nomComplet);
-        }
-        nom.setNomComplet(nomComplet.getFirst());
-    }
+		return resultats;*/
+	}
+
+	public List<ResultatDeComparaison> dedupliquerUneListe(List<Nom> liste) {
+		List<ResultatDeComparaison> resultatsBruts = comparerDeuxListes(liste, liste);;
+		
+		return resultatsBruts.stream().filter(r -> !r.getNom1().getId().equals(r.getNom2().getId())).toList();
+	}
+
+	/*
+	 * la methode pretraiterUnNom permet de pretraiter les deux attributs
+	 * NomDecompose et nomComplet d'un objet de type Nom en les faisant passer par
+	 * la liste des pretraitements
+	 */
+	private void pretraiterUnNom(Nom nom) {
+		// Étape 1 : prétraitement du nom decomposé
+
+		List<String> partiesNom = nom.getNomDecompose();
+		for (Pretraiteur pretraiteur : pretraiteurs) {
+			partiesNom = pretraiteur.traiter(partiesNom);
+		}
+		nom.setNomDecompose(partiesNom);
+
+		// Étape 2 : prétraitement du nom complet
+
+		List<String> nomComplet = new ArrayList<>();
+		nomComplet.add(nom.getNomComplet());
+		for (Pretraiteur pretraiteur : pretraiteurs) {
+			nomComplet = pretraiteur.traiter(nomComplet);
+		}
+		nom.setNomComplet(nomComplet.getFirst());
+	}
 }
-
-
-
-
-

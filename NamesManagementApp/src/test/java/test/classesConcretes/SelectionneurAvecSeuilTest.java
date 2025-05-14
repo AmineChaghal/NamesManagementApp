@@ -27,7 +27,7 @@ public class SelectionneurAvecSeuilTest {
         List<ResultatDeComparaison> tousLesResultats = Arrays.asList(res1, res2, res3, res4, res5);
 
         // Cas 1: Seuil élevé, peu de résultats
-        SelectionneurDeResultats selectionneur1 = new SelectionneurAvecSeuil(0.8f);
+        SelectionneurDeResultats selectionneur1 = new SelectionneurAvecSeuil(0.8);
         List<ResultatDeComparaison> resultat1 = selectionneur1.selectionner(tousLesResultats);
         // Attendu: res1 (0.8), res3 (0.9)
         List<ResultatDeComparaison> expected1 = Arrays.asList(res1, res3);
@@ -38,7 +38,7 @@ public class SelectionneurAvecSeuilTest {
         }
 
         // Cas 2: Seuil bas, plus de résultats
-        SelectionneurDeResultats selectionneur2 = new SelectionneurAvecSeuil(0.5f);
+        SelectionneurDeResultats selectionneur2 = new SelectionneurAvecSeuil(0.5);
         List<ResultatDeComparaison> resultat2 = selectionneur2.selectionner(tousLesResultats);
         // Attendu: res1 (0.8), res2 (0.5), res3 (0.9), res5 (0.7)
         List<ResultatDeComparaison> expected2 = Arrays.asList(res1, res2, res3, res5);
@@ -49,7 +49,7 @@ public class SelectionneurAvecSeuilTest {
         }
 
         // Cas 3: Seuil très élevé, aucun résultat
-        SelectionneurDeResultats selectionneur3 = new SelectionneurAvecSeuil(1.0f);
+        SelectionneurDeResultats selectionneur3 = new SelectionneurAvecSeuil(1.0);
         List<ResultatDeComparaison> resultat3 = selectionneur3.selectionner(tousLesResultats);
         // Attendu: liste vide
         if (resultat3.isEmpty()) {
@@ -59,7 +59,7 @@ public class SelectionneurAvecSeuilTest {
         }
 
         // Cas 4: Seuil très bas (ou 0), tous les résultats (sauf si score < 0, ce qui n'est pas le cas ici)
-        SelectionneurDeResultats selectionneur4 = new SelectionneurAvecSeuil(0.0f);
+        SelectionneurDeResultats selectionneur4 = new SelectionneurAvecSeuil(0.0);
         List<ResultatDeComparaison> resultat4 = selectionneur4.selectionner(tousLesResultats);
         // Attendu: tousLesResultats
         if (resultat4.size() == tousLesResultats.size() && resultat4.containsAll(tousLesResultats)) {
@@ -69,7 +69,7 @@ public class SelectionneurAvecSeuilTest {
         }
 
         // Cas 5: Liste de résultats vide
-        SelectionneurDeResultats selectionneur5 = new SelectionneurAvecSeuil(0.5f);
+        SelectionneurDeResultats selectionneur5 = new SelectionneurAvecSeuil(0.5);
         List<ResultatDeComparaison> resultat5 = selectionneur5.selectionner(new ArrayList<>());
         if (resultat5.isEmpty()) {
             System.out.println("SelectionneurAvecSeuilTest - Cas 5 (liste vide en entrée): Succès.");

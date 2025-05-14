@@ -24,20 +24,20 @@ public class ComparateurDeNomsCompletsTest {
         ComparateurDeNoms comparateurNoms1 = new ComparateurDeNomsComplets(comparateurs1);
 
         double resultat1_1 = comparateurNoms1.comparer(nom1, nom2); // Devrait être 1.0f
-        if (resultat1_1 == 1.0f) {
+        if (resultat1_1 == 1.0) {
             System.out.println("ComparateurDeNomsCompletsTest - Cas 1.1 (noms identiques): Succès");
         } else {
             System.err.println("ComparateurDeNomsCompletsTest - Cas 1.1: Échec. Attendu: 1.0, Obtenu: " + resultat1_1);
         }
 
         double resultat1_2 = comparateurNoms1.comparer(nom1, nom3); // Devrait être 0.0f
-        if (resultat1_2 == 0.0f) {
+        if (resultat1_2 == 0.0) {
             System.out.println("ComparateurDeNomsCompletsTest - Cas 1.2 (noms différents): Succès");
         } else {
             System.err.println("ComparateurDeNomsCompletsTest - Cas 1.2: Échec. Attendu: 0.0, Obtenu: " + resultat1_2);
         }
 
-        // Cas 2: Utilisation de deux comparateurs (EgaliteExacte et un mock qui retourne toujours 0.5f)
+        // Cas 2: Utilisation de deux comparateurs (EgaliteExacte et un mock qui retourne toujours 0.5)
         // Pour simplifier, nous allons réutiliser EgaliteExacte et un autre qui retourne une valeur fixe.
         // Idéalement, on utiliserait un framework de mock comme Mockito.
         class MockComparateurChaines implements ComparateurDeChaines {
@@ -49,14 +49,14 @@ public class ComparateurDeNomsCompletsTest {
 
         List<ComparateurDeChaines> comparateurs2 = new ArrayList<>();
         comparateurs2.add(new ComparateurEgaliteExacte()); // Score 1.0f pour nom1 vs nom2
-        comparateurs2.add(new MockComparateurChaines(0.5f)); // Score 0.5f pour n'importe quelle paire
+        comparateurs2.add(new MockComparateurChaines(0.5)); // Score 0.5f pour n'importe quelle paire
         ComparateurDeNoms comparateurNoms2 = new ComparateurDeNomsComplets(comparateurs2);
 
         // Test avec nom1 et nom2 (identiques pour EgaliteExacte)
         // EgaliteExacte retourne 1.0f. MockComparateurChaines retourne 0.5f.
-        // Moyenne attendue = (1.0f + 0.5f) / 2 = 0.75f
+        // Moyenne attendue = (1.0f + 0.5) / 2 = 0.75f
         double resultat2_1 = comparateurNoms2.comparer(nom1, nom2);
-        if (resultat2_1 == 0.75f) {
+        if (resultat2_1 == 0.75) {
             System.out.println("ComparateurDeNomsCompletsTest - Cas 2.1 (deux comparateurs, noms identiques): Succès");
         } else {
             System.err.println("ComparateurDeNomsCompletsTest - Cas 2.1: Échec. Attendu: 0.75, Obtenu: " + resultat2_1);
@@ -64,9 +64,9 @@ public class ComparateurDeNomsCompletsTest {
 
         // Test avec nom1 et nom3 (différents pour EgaliteExacte)
         // EgaliteExacte retourne 0.0f. MockComparateurChaines retourne 0.5f.
-        // Moyenne attendue = (0.0f + 0.5f) / 2 = 0.25f
+        // Moyenne attendue = (0.0f + 0.5) / 2 = 0.25f
         double resultat2_2 = comparateurNoms2.comparer(nom1, nom3);
-        if (resultat2_2 == 0.25f) {
+        if (resultat2_2 == 0.25) {
             System.out.println("ComparateurDeNomsCompletsTest - Cas 2.2 (deux comparateurs, noms différents): Succès");
         } else {
             System.err.println("ComparateurDeNomsCompletsTest - Cas 2.2: Échec. Attendu: 0.25, Obtenu: " + resultat2_2);

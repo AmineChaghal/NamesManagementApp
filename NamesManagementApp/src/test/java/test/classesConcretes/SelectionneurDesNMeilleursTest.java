@@ -19,11 +19,11 @@ public class SelectionneurDesNMeilleursTest {
         Nom nom4 = new Nom("N4", Arrays.asList("N4"), "4");
         // ResultatDeComparaison doit implémenter Comparable pour que Collections.sort fonctionne comme attendu.
         // On suppose que ResultatDeComparaison.compareTo trie par score décroissant.
-        ResultatDeComparaison resA = new ResultatDeComparaison(nom1, nom2, 0.9f); // Meilleur
-        ResultatDeComparaison resB = new ResultatDeComparaison(nom1, nom3, 0.8f); // 2ème
-        ResultatDeComparaison resC = new ResultatDeComparaison(nom2, nom3, 0.7f); // 3ème
-        ResultatDeComparaison resD = new ResultatDeComparaison(nom3, nom4, 0.6f); // 4ème
-        ResultatDeComparaison resE = new ResultatDeComparaison(nom1, nom4, 0.5f); // 5ème
+        ResultatDeComparaison resA = new ResultatDeComparaison(nom1, nom2, 0.9); // Meilleur
+        ResultatDeComparaison resB = new ResultatDeComparaison(nom1, nom3, 0.8); // 2ème
+        ResultatDeComparaison resC = new ResultatDeComparaison(nom2, nom3, 0.7); // 3ème
+        ResultatDeComparaison resD = new ResultatDeComparaison(nom3, nom4, 0.6); // 4ème
+        ResultatDeComparaison resE = new ResultatDeComparaison(nom1, nom4, 0.5); // 5ème
 
         List<ResultatDeComparaison> tousLesResultats = new ArrayList<>(Arrays.asList(resE, resC, resA, resD, resB)); // Ordre initial mélangé
         // La classe ResultatDeComparaison doit avoir une méthode compareTo qui trie par score décroissant.
@@ -86,10 +86,10 @@ public class SelectionneurDesNMeilleursTest {
         }
         
         // Cas 6: N négatif (devrait idéalement être géré, par exemple en le traitant comme 0 ou en levant une exception)
-        // L'implémentation actuelle de subList lèverait une IllegalArgumentException si fromIndex > toIndex (ce qui arriverait si n est négatif et Math.min(n, size) devient négatif)
+        // L'implémentation actuelle de subList lèverait une IllegalArgumentException si fromIndex > toIndex (ce qui arriverait si n est négatif et Math.min(n, size) devient négati)
         // ou une IndexOutOfBoundsException si n est négatif et Math.min(n, size) est négatif.
         // Pour un test simple, on s'attend à ce que cela ne crashe pas ou soit géré.
-        // Si n est négatif, Math.min(n, size) sera n. subList(0, n_negatif) lèvera une exception.
+        // Si n est négatif, Math.min(n, size) sera n. subList(0, n_negati) lèvera une exception.
         // On va tester avec n=1 pour s'assurer que le tri est correct pour le premier élément.
         SelectionneurDeResultats selectionneur6 = new SelectionneurDesNMeilleurs(1);
         List<ResultatDeComparaison> resultat6 = selectionneur6.selectionner(new ArrayList<>(tousLesResultats));
